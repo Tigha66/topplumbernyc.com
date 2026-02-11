@@ -1,0 +1,110 @@
+{
+  "name": "Top Plumber NYC AI Assistant",
+  "version": "1.0.0",
+  "description": "AI voice and chat assistant for Top Plumber NYC",
+  "settings": {
+    "voice": {
+      "provider": "elevenlabs",
+      "voiceId": "21m00Tcm4TlvDq8SkH4G",
+      "stability": 0.5,
+      "similarityBoost": 0.75,
+      "style": 0.0,
+      "useSpeakerBoost": true
+    },
+    "transcriber": {
+      "provider": "deepgram",
+      "language": "en-US",
+      "model": "nova-2"
+    },
+    "model": {
+      "provider": "openai",
+      "model": "gpt-4o",
+      "maxTokens": 500,
+      "temperature": 0.3,
+      "systemPrompt": "You are the official AI voice and chat assistant for Top Plumber NYC, a professional plumbing and HVAC company serving New York City and the Tri-State Area.\n\nCOMPANY INFO:\n- Business: Top Plumber NYC\n- Website: www.topplumbernyc.com\n- Hours: 24/7 Emergency Service\n- Areas: NYC, Tri-State\n\nKEY POINTS:\n✅ 24/7 Emergency Plumbing & HVAC\n✅ Licensed & Insured\n✅ Upfront Pricing (no hidden fees)\n✅ Same-Day Service\n✅ Trusted NYC Plumbers\n\nSERVICES:\n1. Emergency Plumbing (24/7)\n2. HVAC (Heating & Cooling)\n3. Drain Cleaning\n4. Water Heaters\n5. Boiler Services\n6. Pipe Repair\n7. Leak Detection\n8. Gas Line Services\n9. Commercial & Residential\n\nCRITICAL RULES:\n\nEMERGENCIES → Route to human immediately:\n- gas leak / smelling gas / gas smell\n- flooding / flood / water everywhere\n- sewer backup / sewage\n- no heat / furnace not working\n- burst pipe\n\nWhen emergency detected: 'This sounds urgent. Call 1-800-XXX-XXXX NOW for immediate help.'\n\nBOOKING FLOW:\n1. Collect: Name, Phone, Email, Service, Date, Time, Address, Issue\n2. Confirm details back to customer\n3. Explain email/SMS confirmation will be sent\n4. Never give specific prices - offer free estimates\n\nPRICING: 'We offer upfront, transparent pricing with no hidden fees. Free estimates available.'\n\nGREETING: 'Hi, Top Plumber NYC, your trusted NYC plumber, 24/7. How can I help?'\n\nAlways be professional, friendly, and helpful. Route emergencies to humans immediately."
+    },
+    "recordingEnabled": true,
+    "recordingBehavior": {
+      "endConversationOnSpeakerEnd": false
+    },
+    "endCallMessage": "Thank you for choosing Top Plumber NYC! Remember, we're here 24/7 for all your plumbing needs. Have a great day!",
+    "silenceTimeoutSeconds": 30,
+    "maxDurationSeconds": 1800
+  },
+  "functions": [
+    {
+      "name": "bookAppointment",
+      "description": "Book a plumbing appointment",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "customerName": {string", "description "type": "": "Full name of customer" },
+          "phone": { "type": "string", "description": "Phone number with area code" },
+          "email": { "type": "string", "description": "Email address" },
+          "serviceType": { "type": "string", "description": "Type of service needed" },
+          "preferredDate": { "type": "string", "description": "Preferred date YYYY-MM-DD" },
+          "timeWindow": { "type": "string", "description": "morning, afternoon, or evening" },
+          "address": { "type": "string", "description": "Full address with zip code" },
+          "description": { "type": "string", "description": "Brief description of issue" }
+        },
+        "required": ["customerName", "phone", "serviceType", "address"]
+      }
+    },
+    {
+      "name": "sendEmailConfirmation",
+      "description": "Send booking confirmation email",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "email": { "type": "string", "description": "Customer email" },
+          "customerName": { "type": "string", "description": "Customer name" },
+          "appointmentDetails": { "type": "string", "description": "JSON string with appointment info" }
+        },
+        "required": ["email", "customerName"]
+      }
+    },
+    {
+      "name": "routeToHuman",
+      "description": "Route customer to human agent",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "reason": { "type": "string", "description": "Reason for human handoff" },
+          "urgency": { "type": "string", "enum": ["low", "medium", "high", "emergency"] }
+        },
+        "required": ["reason"]
+      }
+    },
+    {
+      "name": "getAvailability",
+      "description": "Check available appointment slots",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "serviceType": { "type": "string", "description": "Type of service" },
+          "preferredDate": { "type": "string", "description": "Preferred date" }
+        },
+        "required": ["serviceType"]
+      }
+    },
+    {
+      "name": "sendSMSReminder",
+      "description": "Send SMS appointment reminder",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "phone": { "type": "string", "description": "Customer phone number" },
+          "message": { "type": "string", "description": "Reminder message" }
+        },
+        "required": ["phone"]
+      }
+    }
+  ],
+  "metadata": {
+    "created": "2026-02-11",
+    "platform": "Vapi",
+    "company": "Top Plumber NYC",
+    "website": "www.topplumbernyc.com",
+    "tags": ["plumbing", "HVAC", "NYC", "emergency", "booking"]
+  }
+}
